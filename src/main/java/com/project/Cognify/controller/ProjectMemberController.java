@@ -3,7 +3,6 @@ package com.project.Cognify.controller;
 import com.project.Cognify.dto.member.InviteMemberRequest;
 import com.project.Cognify.dto.member.MemberResponse;
 import com.project.Cognify.dto.member.UpdateMemberRoleRequest;
-import com.project.Cognify.entity.ProjectMember;
 import com.project.Cognify.service.ProjectMemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -47,12 +46,13 @@ public class ProjectMemberController {
     }
 
     @DeleteMapping("/{memberId}")
-    public ResponseEntity<MemberResponse> deleteMember(
+    public ResponseEntity<MemberResponse> removeMember(
             @PathVariable Long projectId,
             @PathVariable Long memberId
     ) {
         Long userId = 1L;
-        return ResponseEntity.ok(projectMemberService.deleteProjectMember(projectId, memberId, userId));
+        projectMemberService.removeProjectMember(projectId, memberId, userId);
+        return ResponseEntity.noContent().build();
     }
 
 
