@@ -31,7 +31,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse signup(SignupRequest request) {
-        userRepository.findByusername(request.username())
+        userRepository.findByUsername(request.username())
                 .ifPresent(user -> {
                     throw new BadRequestException("User already exists with username: " + request.username());
                 });

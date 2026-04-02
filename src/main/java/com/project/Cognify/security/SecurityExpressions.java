@@ -40,3 +40,4 @@ public class SecurityExpressions {
         return hasPermission(projectId, ProjectPermission.MANAGE_MEMBERS);
     }
 }
+
