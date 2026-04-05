@@ -1,14 +1,22 @@
 package com.project.Cognify.service;
 
-import com.project.Cognify.dto.subscription.CheckoutRequest;
-import com.project.Cognify.dto.subscription.CheckoutResponse;
-import com.project.Cognify.dto.subscription.PortalResponse;
 import com.project.Cognify.dto.subscription.SubscriptionResponse;
+import com.project.Cognify.enums.SubscriptionStatus;
+
+import java.time.Instant;
 
 public interface SubscriptionService {
-    SubscriptionResponse getCurrentSubscription(Long userId);
+    SubscriptionResponse getCurrentSubscription();
 
-    CheckoutResponse createCheckoutSessionUrl(CheckoutRequest request);
+    void activateSubscription(Long userId, Long planId, String subscriptionId, String customerId);
 
-    PortalResponse openCustomerPortal(Long userId);
+    void updateSubscription(String gatewaySubscriptionId, SubscriptionStatus status, Instant periodStart, Instant periodEnd, Boolean cancelAtPeriodEnd, Long planId);
+
+    void cancelSubscription(String gatewaySubscriptionId);
+
+    void renewSubscriptionPeriod(String subId, Instant periodStart, Instant periodEnd);
+
+    void markSubscriptionPastDue(String subId);
+
+    boolean canCreateNewProject();
 }

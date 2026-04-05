@@ -25,7 +25,7 @@ jwt:
 stripe:
   api:
 #    secret: sk_test_51TI2NmG0w0p89QloHTGGR2fVC1nqRWJpCX1hFESwF2mronpuIqYLezp9W8nz0iVs2tvTitqYrb9eLCCxmzBSDXkM00an0XxeSG
-#    secret: sk_test_51TI2NmG0w0p89QloHTGGR2fVC1nqRWJpCX1hFESwF2mronpuIqYLezp9W8nz0iVs2tvTitqYrb9eLCCxmzBSDXkM00an0XxeSG
+    secret: sk_test_51TI2NmG0w0p89QloHTGGR2fVC1nqRWJpCX1hFESwF2mronpuIqYLezp9W8nz0iVs2tvTitqYrb9eLCCxmzBSDXkM00an0XxeSG
   webhook:
     secret: whsec_aa738954b823de3ac5820441aeea1d172b536aeb2ac7ee9251b4eba942933301
 
