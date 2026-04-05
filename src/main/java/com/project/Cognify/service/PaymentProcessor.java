@@ -3,12 +3,15 @@ package com.project.Cognify.service;
 import com.project.Cognify.dto.subscription.CheckoutRequest;
 import com.project.Cognify.dto.subscription.CheckoutResponse;
 import com.project.Cognify.dto.subscription.PortalResponse;
-import com.project.Cognify.dto.subscription.SubscriptionResponse;
+import com.stripe.model.StripeObject;
 
-public interface SubscriptionService {
-    SubscriptionResponse getCurrentSubscription(Long userId);
+import java.util.Map;
+
+public interface PaymentProcessor {
 
     CheckoutResponse createCheckoutSessionUrl(CheckoutRequest request);
 
-    PortalResponse openCustomerPortal(Long userId);
+    PortalResponse openCustomerPortal();
+
+    void handleWebhookEvent(String type, StripeObject stripeObject, Map<String, String> metadata);
 }
