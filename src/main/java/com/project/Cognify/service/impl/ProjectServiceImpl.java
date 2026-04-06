@@ -8,6 +8,7 @@ import com.project.Cognify.entity.ProjectMember;
 import com.project.Cognify.entity.ProjectMemberId;
 import com.project.Cognify.entity.User;
 import com.project.Cognify.enums.ProjectRole;
+import com.project.Cognify.error.BadRequestException;
 import com.project.Cognify.error.ResourceNotFoundException;
 import com.project.Cognify.mapper.ProjectMapper;
 import com.project.Cognify.repository.ProjectMemberRepository;
@@ -15,6 +16,7 @@ import com.project.Cognify.repository.ProjectRepository;
 import com.project.Cognify.repository.UserRepository;
 import com.project.Cognify.security.AuthUtil;
 import com.project.Cognify.service.ProjectService;
+import com.project.Cognify.service.SubscriptionService;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -37,9 +39,14 @@ public class ProjectServiceImpl implements ProjectService {
     ProjectMapper projectMapper;
     ProjectMemberRepository projectMemberRepository;
     AuthUtil authUtil;
+    SubscriptionService  subscriptionService;
 
     @Override
     public ProjectResponse createProject(ProjectRequest request) {
+
+        if(!subscriptionService.canCreateNewProject()) {
+            throw new BadRequestException("User cannot create a New project with current Plan, Upgrade plan now.");
+        }
 
         Long userId = authUtil.getCurrentUserId();
 //        User owner = userRepository.findById(userId).orElseThrow(
@@ -53,7 +60,6 @@ public class ProjectServiceImpl implements ProjectService {
                 .isPublic(false)
                 .build();
         project = projectRepository.save(project);
-
 
         ProjectMemberId projectMemberId = new ProjectMemberId(project.getId(), owner.getId());
         ProjectMember projectMember = ProjectMember.builder()
