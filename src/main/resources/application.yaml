@@ -19,6 +19,17 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
 
+#  ai:
+#    openai:
+#      api-key:
+#      base-url: https://openrouter.ai/api
+#      chat:
+#        options:
+#          #          model: x-ai/grok-code-fast-1
+##          model: google/gemini-3-flash-preview
+#          model: qwen/qwen3-next-80b-a3b-instruct:free
+#          temperature: 0.0
+
 jwt:
   secret-key: as9b7aodlbjfkluosfd789ujeklfnlsduf90b8ha908w74tuqijvlckajdl
 
