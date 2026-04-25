@@ -3,13 +3,11 @@ package com.project.Cognify.controller;
 
 import com.project.Cognify.dto.project.FileContentResponse;
 import com.project.Cognify.dto.project.FileNode;
-import com.project.Cognify.service.FileService;
+import com.project.Cognify.dto.project.FileTreeResponse;
+import com.project.Cognify.service.ProjectFileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,21 +16,18 @@ import java.util.List;
 @RequestMapping("/api/projects/{projectId}/files")
 public class FileController {
 
-    private final FileService fileService;
+    private final ProjectFileService projectFileService;
 
     @GetMapping
-    public ResponseEntity<List<FileNode>> getFileTree(@PathVariable Long projectId) {
-        Long userId = 1L;
-        return ResponseEntity.ok(fileService.getFileTree(projectId, userId));
+    public ResponseEntity<FileTreeResponse> getFileTree(@PathVariable Long projectId) {
+        return ResponseEntity.ok(projectFileService.getFileTree(projectId));
     }
 
-    @GetMapping("/{*path}") // /src/hooks/get-user-hook.jsx
+    @GetMapping("/content")
     public ResponseEntity<FileContentResponse> getFile(
             @PathVariable Long projectId,
-            @PathVariable String path
-    ) {
-        Long userId = 1L;
-        return ResponseEntity.ok(fileService.getFileContent(projectId, path, userId));
+            @RequestParam String path) {
+        return ResponseEntity.ok(projectFileService.getFileContent(projectId, path));
     }
 
 }

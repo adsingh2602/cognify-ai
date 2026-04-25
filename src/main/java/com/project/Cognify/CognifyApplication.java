@@ -1,5 +1,6 @@
 package com.project.Cognify;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -7,6 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class CognifyApplication {
 
 	public static void main(String[] args) {
+		Dotenv dotenv = Dotenv.load();
+		System.setProperty("OPENAI_API_KEY", dotenv.get("OPENAI_API_KEY"));
 		SpringApplication.run(CognifyApplication.class, args);
 	}
 
