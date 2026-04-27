@@ -18,6 +18,8 @@ target/
 *.iws
 *.iml
 *.ipr
+.env
+.env.*
 
 ### NetBeans ###
 /nbproject/private/
@@ -33,5 +35,5 @@ build/
 .vscode/
 
 # --- Secrets / Environment ---
-.env
-.env.*
+#.env
+#.env.*

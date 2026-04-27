@@ -1,6 +1,8 @@
 package com.project.Cognify.service.impl;
 
 import com.project.Cognify.llm.PromptUtils;
+import com.project.Cognify.llm.advisors.FileTreeContextAdvisor;
+import com.project.Cognify.llm.tools.CodeGenerationTools;
 import com.project.Cognify.security.AuthUtil;
 import com.project.Cognify.service.AiGenerationService;
 import com.project.Cognify.service.ProjectFileService;
@@ -25,6 +27,8 @@ public class AiGenerationServiceImpl implements AiGenerationService {
     private final ChatClient chatClient;
     private final AuthUtil authUtil;
     private final ProjectFileService projectFileService;
+    private final FileTreeContextAdvisor fileTreeContextAdvisor;
+
 
     private static final Pattern FILE_TAG_PATTERN = Pattern.compile("<file path=\"([^\"]+)\">(.*?)</file>", Pattern.DOTALL);
 
@@ -42,11 +46,15 @@ public class AiGenerationServiceImpl implements AiGenerationService {
 
         StringBuilder fullResponseBuffer = new StringBuilder();
 
+        CodeGenerationTools codeGenerationTools = new CodeGenerationTools(projectFileService, projectId);
+
         return chatClient.prompt()
-                .system(PromptUtils.CODE_GENERATION_SYSTEM_PROMPT)  //SYSTEM_PROMPT_HERE
+                .system(PromptUtils.CODE_GENERATION_SYSTEM_PROMPT + " --gile_tree--" + projectFileService.getFileTree(projectId).toString())  //SYSTEM_PROMPT_HERE
                 .user(userMessage)
+                .tools(codeGenerationTools)
                 .advisors(advisorSpec -> {
                             advisorSpec.params(advisorParams);
+                            advisorSpec.advisors(fileTreeContextAdvisor);
                         }
                 )
                 .stream()
@@ -83,7 +91,7 @@ public class AiGenerationServiceImpl implements AiGenerationService {
 
         Matcher matcher = FILE_TAG_PATTERN.matcher(fullResponse);
 
-        while(matcher.find()) {
+        while (matcher.find()) {
             String filePath = matcher.group(1);
             String fileContent = matcher.group(2).trim();
 

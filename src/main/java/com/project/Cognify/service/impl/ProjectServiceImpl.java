@@ -16,6 +16,7 @@ import com.project.Cognify.repository.ProjectRepository;
 import com.project.Cognify.repository.UserRepository;
 import com.project.Cognify.security.AuthUtil;
 import com.project.Cognify.service.ProjectService;
+import com.project.Cognify.service.ProjectTemplateService;
 import com.project.Cognify.service.SubscriptionService;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
@@ -40,6 +41,7 @@ public class ProjectServiceImpl implements ProjectService {
     ProjectMemberRepository projectMemberRepository;
     AuthUtil authUtil;
     SubscriptionService  subscriptionService;
+    ProjectTemplateService projectTemplateService;
 
     @Override
     public ProjectResponse createProject(ProjectRequest request) {
@@ -70,6 +72,8 @@ public class ProjectServiceImpl implements ProjectService {
                 .project(project)
                 .build();
         projectMemberRepository.save(projectMember);
+
+        projectTemplateService.initializeProjectFromTemplate(project.getId());
 
         return projectMapper.toProjectResponse(project);
     }
